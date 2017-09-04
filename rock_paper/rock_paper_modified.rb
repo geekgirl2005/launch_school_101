@@ -1,14 +1,19 @@
 require 'pry'
 
-#VALID_OPTIONS = %w(rock scissors paper lizard spock)
+# VALID_OPTIONS = %w(rock scissors paper lizard spock)
 
-VALID_OPTIONS = {
-  "r" => "rock",
-  "s" => "scissors",
-  "p" => "paper",
-  "l" => "lizard",
-  "sp" => "spock"
-}
+VALID_OPTIONS = { 'r' => 'rock',
+                  's' => 'scissors',
+                  'p' => 'paper',
+                  'l' => 'lizard',
+                  'sp' => 'spock' }
+
+WINNING_POSITIONS = { 'rock'     => %w(scissors lizard),
+                      'scissors' => %w(paper lizard),
+                      'paper'    => %w(rock spock),
+                      'spock'    => %w(scissors rock),
+                      'lizard'   => ['paper'] }
+
 
 def prompt(message)
   puts("=> #{message}")
@@ -17,93 +22,46 @@ end
 player = ''
 computer = ''
 answer = ''
-winning_positions = {}
+player_score = 0
+computer_score = 0
 
-
-=begin
-The approach that we recommend takes the logic out of the method and puts it into a collection. 
-Instead of testing a long series of conditions, you can look up the player's move as a key in a hash. 
-The value of that hash element would be a list of moves that the player's move beats. 
-For instance, if you look up "rock," you should be able to determine that "rock" defeats either "scissors" or "lizard." 
-This technique is an everyday coding "pattern" that will serve you well. 
-Moving repetitive logic into hashes and arrays comes up in all kinds of programs, so it's worth trying to learn the technique now.
-=end
-
-=begin
-                        
-
-player = "rock"
-result = winning_positions.select do |k, v|
-  k == player
-end
-
-puts result.values
-
-
-
-
-family = {  uncles: ["bob", "joe", "steve"],
-            sisters: ["jane", "jill", "beth"],
-            brothers: ["frank","rob","david"],
-            aunts: ["mary","sally","susan"]
-          }
-
-immediate_family = family.select do |k, v|
-  k == :sisters || k == :brothers
-end
-
-arr = immediate_family.values.flatten
-
-p arr
-
-
-=end
-
-                     
-=begin
--check my position(key) compare to computer (value)
-take my key
-if key has value
-  i won
-elsif value not found
-  computer won
-else 
-  It's a tie
-=end
-
-
-def display_winner(hash1, hash2, computer, player)
-  result = hash1[hash2[player]].any? {|w| w == computer}
-  if result
-puts("you won!")
-elsif hash2[player] == computer
-  puts("It's a tie!")
-else
-  puts("Computer won!")
-end    
+def winner?(hash1, hash2, computer, player)
+  hash1[hash2[player]].any? { |v| v == computer }  
 end
 
 loop do 
-  winning_positions = { "rock" => ["scissors", "lizard"],
-                      "scissors" => ["paper", "lizard"],
-                      "paper" => ["rock", "spock"],
-                      "spock" => ["scissors", "rock"],
-                      "lizard" => ["paper"]}
   loop do 
     prompt("Please choose one #{VALID_OPTIONS}")
     player = gets.chomp
     
-    break if VALID_OPTIONS.has_key?(player)
+    #break if VALID_OPTIONS.key?(player)
+    break if VALID_OPTIONS.start_with?(player)
     prompt('Choose one of the valid options!')
   end
 
-  computer = VALID_OPTIONS[VALID_OPTIONS.keys.sample]
-  prompt("You chose #{player} and computer chose #{computer}")
+  computer = VALID_OPTIONS.values.sample
+  prompt("You chose #{VALID_OPTIONS[player]} and computer chose #{computer}")
 
- display_winner(winning_positions, VALID_OPTIONS, computer, player)
- #test = VALID_OPTIONS[player]
- #prompt("TEST = #{test}")
- 
+  result = winner?(WINNING_POSITIONS, VALID_OPTIONS, computer, player)
+    if result
+      player_score += 1
+      if(player_score>=5)
+        prompt("You won and you are a grand winner with a total score of #{player_score}!")
+      else
+        prompt("You won! Your total score is #{player_score}")
+      end
+      
+    elsif VALID_OPTIONS[player] == computer
+      puts("It's a tie!")
+    else
+      computer_score += 1
+      if computer_score>=5
+        prompt("Computer won and it is a grand winner with a total score of #{computer_score}")
+      else 
+      puts("Computer won and its total score is #{computer_score}")
+      end
+    end  
+
   prompt("Do you want to play again? ('y')")
   answer = gets.chomp
 
