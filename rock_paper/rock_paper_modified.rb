@@ -35,6 +35,7 @@ loop do
     player = gets.chomp
     
     break if VALID_OPTIONS.key?(player)
+    #break if VALID_OPTIONS.start_with?(player)
     prompt('Choose one of the valid options!')
   end
 
