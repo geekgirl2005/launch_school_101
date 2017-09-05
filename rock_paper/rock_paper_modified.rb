@@ -34,8 +34,7 @@ loop do
     prompt("Please choose one #{VALID_OPTIONS}")
     player = gets.chomp
     
-    #break if VALID_OPTIONS.key?(player)
-    break if VALID_OPTIONS.start_with?(player)
+    break if VALID_OPTIONS.key?(player)
     prompt('Choose one of the valid options!')
   end
 
