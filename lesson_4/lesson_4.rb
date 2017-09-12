@@ -2,12 +2,6 @@ str = 'abcdef'
 str[2, 3]
 puts str #=> cde
 
-def test(str)
-  str[2, 3]!
-end
-
-test(str)
-puts str 
 
 str = 'The grass is green'
 puts str[4, 5]
@@ -206,7 +200,7 @@ names = ['Sally', 'Joe', 'Lisa', 'Henry']
 loop do
   names.shift
   p names
-  break if names.size == # break id names.empty?
+  break if names.size == names.size # break id names.empty?
 end
 
 5.times do |index|
@@ -521,13 +515,10 @@ multiply(my_numbers, 3)
 def double_numbers(numbers)
   doubled_numbers = []
   counter = 0
-
   loop do
     break if counter == numbers.size
-
     current_number = numbers[counter]
     doubled_numbers << current_number * 2
-
     counter += 1
   end
   doubled_numbers
@@ -613,6 +604,105 @@ end
 select_letter(question, 'a')
 select_letter(question, 't')
 select_letter(question, 'z') 
+
+test = "test"
+test.each do |l| 
+  puts L + "A"
+end
+
+test  = "test"
+counter = 0
+loop do
+  letter = test[counter]
+  puts letter + "a"
+  counter +=1
+  break if counter == test.size
+end
+
+test = [1,2,3]
+test.each do |t|
+  puts t *2
+end
+
+test = [1,2,3]
+
+test.select do |t|
+  t.odd? *2
+end
+
+test = [1,2,3]
+test.map do |num|
+  num.odd?
+  puts num
+end
+
+
+#METHODS
+#What is the return value of the select method below? Why?
+
+[1, 2, 3].select do |num|
+  num > 5
+  "hi"
+end
+#=> [1,2,3] because "hi" is a "truthy" value
+[1, 2, 3].select do |num|
+  num > 5
+  false
+end # =>[]
+
+#How does count treat the block's return value? How can we find out?
+
+['ant', 'bat', 'caterpillar'].count do |str|
+  str.length <4
+end
+#=> executes 'count' and returns a true value
+#how many strings have length < 4? (2 strings => ant and bat)
+
+#What is the return value of reject in the following code? Why?
+
+[1, 2, 3].reject do |num|
+  puts num
+end #=> [1,2,3] if the return value is 'false' or 'nil'
+# it returns this value! 
+
+[1, 2, 3].reject do |num|
+  num > 2
+end #=> returns everything that is "false" or nil 
+#so 1 > 2 is false so it is returned and 2>2 is false so it is returned
+#=> [1,2]
+
+#What is the return value of each_with_object in the following code? Why?
+#IMPORTANT HOW WE CREATE HASH! CAN'T DO HASH<< VALUE 
+['ant', 'bear', 'cat'].each_with_object({}) do |value, hash|
+  hash[value[0]] = value
+end
+
+
+
+animals = { a: "ant", b: "bear", c: "cat" }
+animals.each_with_object([]) do |pair, array|
+  array << pair.last
+end
+
+array = [1,2,3,4]
+array.each_with_object([]) do |num, new_array|
+  new_array << num if num>1
+end
+p array
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
