@@ -633,12 +633,13 @@ MINUTES_PER_DAY = HOURS_PER_DAY * MINUTES_PER_HOUR
 def time_of_day(int)
   min_calculated = int % MINUTES_PER_DAY 
   hours, minutes = min_calculated.divmod(MINUTES_PER_HOUR)
-  day = day_of_week(int)
-  format('%02d:%02d', hours, minutes) "+ #{day}"
+  format('%02d:%02d', hours, minutes)
 end
 
 WEEK = ['Sun', 'Monday', 'Tue', 'Wed', 'Th', 'Friday', 'Sat']
-
+MINUTES_PER_HOUR = 60
+HOURS_PER_DAY = 24
+MINUTES_PER_DAY = HOURS_PER_DAY * MINUTES_PER_HOUR
 def day_of_week(int)
   days, min = int.divmod(MINUTES_PER_DAY)
   if int < 0
@@ -659,9 +660,10 @@ def day_of_week(int)
   when 6 then WEEK[6]
   else "wrong number of days"
   end
-  day_of_week
+  d_of_w
 end
 
+day_of_week(231)
 time_of_day(-4231)
 
 time_of_day(3000).to_time
@@ -683,25 +685,166 @@ day_of_week(0)
 day_of_week(-3)
 day_of_week(35)
 
+HOUR = 60
+TWENTY_FUOR_H = 60 * 24
+
+def after_midnight(time)
+  hours, minutes = time.split(':').map {&to_i}
+  #hours = time.slice(0,2).to_i
+  #minutes = time.slice(3,4).to_i
+  case hours, minutes
+      when 24, 0 then total = 0
+       when 0, 0 then total = 0
+       else 
+    total = (hours * 60) + minutes
+  end
+end
+after_midnight('00:00')
+after_midnight('12:34')
+after_midnight('24:00')
+
+def before_midnight(time)
+    result = after_midnight(time)
+    if result == 0
+      total =0
+    else 
+    total = TWENTY_FUOR_H  - result
+  end
+end
+
+before_midnight('12:34') 
+before_midnight('00:00') 
+before_midnight('12:34') 
+
+def swap(str)
+  result = str.split.map do |word|
+    word[0], word[-1] = word[-1], word[0]
+    word
+  end
+  result.join(' ')
+end
+
+                v vc
+swap('Oh what a wonderful day it is') #== 'hO thaw a londerfuw yad ti si'
+
+def cleanup(str)
+  str.gsub!(/\W/, ' ').squeeze(' ')
+end
+cleanup("---I am *&$ 65 Years Old %$#")
+
+
+  #str.gsub!(/[^a-z]/i, ' ').squeeze(' ') 
+  #this will remove anything that is not an alphabetical letter (will remove numbers)
+  str.gsub!(/\W/, ' ').squeeze(' ')
+  #this will keep all letters and numbers!
+  #str.gsub!(/\s+/, ' ')
+end
+
+cleanup("---I am *&$ 65 Years Old %$#") #== ' what s my line '
+
+
+def word_sizes(str)
+ 
+  new_hash= Hash.new(0)
+  str.split.each do |s|
+   new_hash[s.size] += 1
+  end
+  new_hash
+end
+
+
+word_sizes('and sue but')
+word_sizes('Four and score and seven.') 
+
+def word_sizes(str)
+  new_hash = Hash.new(0)
+  str.split.each do |s|
+    new_str = s.delete('^A-Za-z')
+    puts new_str
+    new_hash[new_str.size] +=1
+  end
+  new_hash
+end
+
+word_sizes("What's up doc?")
+word_sizes('Hey diddle diddle, the cat and the fiddle!')
+
+NUMBER_WORDS = %w(zero one two three four
+                  five six seven eight nine
+                  ten eleven twelve thirteen fourteen
+                  fifteen sixteen seventeen eighteen nineteen)
+
+def alphabetic_number_sort(numbers)
+  numbers.sort_by! {|n| NUMBER_WORDS[n]}
+end
 
 
 
+def crunch(string)
+    counter = 0
+      loop do
+        break if counter == string.size-1
+        if string[counter + 1].eql?(string[counter])
+          puts string[counter+1]
+          string.delete!(string[counter +1])
+        end
+          counter +=1
+        end
+    string
+  end
+crunch('ddaaiillyy ddoouubbllee')
+
+
+crunch.uniq!
+
+alphabetic_number_sort((7..13).to_a) 
+=begin
+  
+rescue Exception => e
+  
+end== [
+  8, 18, 11, 15, 5, 4, 14, 9, 19, 1, 7, 17,
+  6, 16, 10, 13, 3, 12, 2, 0
+]
+=end
+
+def crunch(string)
+    counter = 0
+    new_string = ''
+      while counter <= (string.length - 1)
+          new_string << string[counter] unless string[counter] == string[counter + 1]
+          counter +=1
+        end
+    new_string
+  end
+  crunch('ddaaiillyy ddoouubbllee')
+
+
+def print_in_box(string)
+horizontal_line = "+#{"-" * (string.size + 2)}+"
+vertical_line = "|#{' ' * (string.size + 2)}|"
+text_line = "| #{string}.|"
+puts horizontal_line
+puts vertical_line
+puts text_line
+puts vertical_line
+puts horizontal_line
+
+end
+
+print_in_box('home sweet home')
+print_in_box('')
++- -+
+|  |
+|  |
+|  |
++--+
 
 
 
+print_in_box('To boldly go where no one has gone before.')
 
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 
 
